@@ -5,10 +5,11 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Optional;
 
+@SuppressWarnings("unused")
 public class BaseShell {
     private String name;
     private final BufferedReader inputStream;
-    private final ArrayList<Command> commands;
+    private final ArrayList<Command> commands = new ArrayList<>();
 
     public void registerCmd(Command cmd) {
         boolean exists = commands.stream().anyMatch(command -> command.getCmdName().equals(cmd.getCmdName()));
@@ -26,7 +27,7 @@ public class BaseShell {
         while (true) {
             System.out.print(name + " >> ");
 
-            String in = "";
+            String in;
             try {
                 in = inputStream.readLine();
                 if(in.equals("exit")) { break; }
@@ -41,7 +42,7 @@ public class BaseShell {
                 System.out.println(ShellStrings.UNKNOWN_COMMAND);
                 continue;
             }
-            result.get().onExecute(split);
+            result.get().execute(split);
         }
     }
 
@@ -49,14 +50,13 @@ public class BaseShell {
         setName(name);
 
         this.inputStream = new BufferedReader(new InputStreamReader(System.in));
-        commands = new ArrayList<>();
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    private void setName(String name) {
         this.name = name;
     }
 }
