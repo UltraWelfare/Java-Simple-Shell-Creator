@@ -23,12 +23,13 @@ public class BaseShell {
 
 
     public void openConsole() {
-        String in = "";
-        while (!in.equals("exit")) {
+        while (true) {
             System.out.print(name + " >> ");
 
+            String in = "";
             try {
                 in = inputStream.readLine();
+                if(in.equals("exit")) { break; }
             } catch (Exception e) {
                 continue;
             }
